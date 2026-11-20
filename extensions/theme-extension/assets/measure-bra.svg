@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300" role="img" aria-labelledby="mbr-title">
+  <title id="mbr-title">How to measure a bra: bust and underbust</title>
+  <defs>
+    <marker id="mbr-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0 0 L6 3 L0 6 Z" fill="#2563eb"/>
+    </marker>
+  </defs>
+  <path d="M120 118 C102 96 68 100 62 130 C58 158 84 176 104 162 C112 156 118 148 120 138 Z" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5"/>
+  <path d="M120 118 C138 96 172 100 178 130 C182 158 156 176 136 162 C128 156 122 148 120 138 Z" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5"/>
+  <rect x="66" y="160" width="108" height="14" rx="6" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1.5"/>
+  <line x1="74" y1="160" x2="94" y2="84" stroke="#9ca3af" stroke-width="1.5"/>
+  <line x1="166" y1="160" x2="146" y2="84" stroke="#9ca3af" stroke-width="1.5"/>
+  <g fill="none" stroke="#2563eb" stroke-width="1.25" stroke-dasharray="4 3">
+    <line x1="60" y1="108" x2="180" y2="108" marker-start="url(#mbr-arrow)" marker-end="url(#mbr-arrow)"/>
+    <line x1="58" y1="186" x2="182" y2="186" marker-start="url(#mbr-arrow)" marker-end="url(#mbr-arrow)"/>
+  </g>
+  <g fill="#374151" font-family="Helvetica, Arial, sans-serif" font-size="13">
+    <text x="120" y="102" text-anchor="middle">Bust</text>
+    <text x="120" y="204" text-anchor="middle">Underbust</text>
+  </g>
+</svg>

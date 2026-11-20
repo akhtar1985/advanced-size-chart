@@ -1,0 +1,212 @@
+{% comment %}
+  Size chart resolver + renderer.
+  Usage:
+    {% render 'size-chart', product: product, uid: block.id, mode: 'block',
+       button_text: block.settings.button_text, display_mode: ..., default_unit: ...,
+       override_color: ..., primary_color: ..., border_radius: ..., position: ... %}
+  Resolution order: product override → first matching shop rule.
+  placement: 'card' or 'cart' moves a text link next to the product title
+  (Size Chart Links embed); omit it on product pages.
+{% endcomment %}
+
+{%- liquid
+  assign asc_uid = uid | default: section.id | default: 'default'
+  assign billing = shop.metafields.app.billing.value
+  assign asc_allowed = true
+  if billing and billing.isActive == false
+    assign asc_allowed = false
+  endif
+
+  assign app_settings = shop.metafields.app.settings.value
+
+  assign asc_override = product.metafields.app.size_chart.value
+  assign asc_chart = nil
+  assign asc_chart_id = nil
+
+  if asc_allowed
+    if asc_override != blank
+      assign asc_chart = asc_override
+    else
+      assign rules = shop.metafields.app.rules.value
+      if rules != blank and rules.size > 0
+        assign sorted_rules = rules | sort: 'priority'
+        for rule in sorted_rules
+          assign asc_matched = false
+          assign asc_value = rule.match.value
+          assign asc_handle = rule.match.handle
+
+          case rule.match.type
+            when 'collection'
+              assign rule_last = asc_value | split: '/' | last
+              for col in product.collections
+                assign col_id_str = col.id | append: ''
+                if asc_handle != blank and col.handle == asc_handle
+                  assign asc_matched = true
+                elsif col_id_str == rule_last
+                  assign asc_matched = true
+                endif
+                if asc_matched
+                  break
+                endif
+              endfor
+            when 'vendor'
+              if product.vendor == asc_value
+                assign asc_matched = true
+              endif
+            when 'product_type'
+              if product.type == asc_value
+                assign asc_matched = true
+              endif
+            when 'tag'
+              if product.tags contains asc_value
+                assign asc_matched = true
+              endif
+            when 'all'
+              assign asc_matched = true
+          endcase
+
+          if asc_matched
+            assign asc_chart_id = rule.chartId
+            break
+          endif
+        endfor
+      endif
+
+      if asc_chart_id != blank
+        assign asc_index = shop.metafields.app.charts_index.value
+        if asc_index != blank
+          assign asc_chart = asc_index[asc_chart_id]
+        endif
+      endif
+    endif
+  endif
+-%}
+
+{%- if asc_chart != blank -%}
+  {%- liquid
+    assign eff_button = button_text | default: app_settings.buttonText
+    assign eff_mode = display_mode | default: app_settings.displayMode | default: 'modal'
+    assign eff_unit = default_unit | default: app_settings.defaultUnit | default: 'cm'
+    assign eff_system = app_settings.defaultSizeSystem | default: 'US'
+    assign eff_color = app_settings.primaryColor | default: '#111111'
+    if override_color and primary_color != blank
+      assign eff_color = primary_color
+    endif
+    assign eff_radius = border_radius | default: app_settings.borderRadius | default: '8px'
+    assign eff_position = position | default: app_settings.buttonPosition | default: 'bottom-right'
+    if app_settings.showCalculator == false
+      assign eff_calc = false
+    else
+      assign eff_calc = true
+    endif
+    if app_settings.showFeedback == false
+      assign eff_feedback = false
+    else
+      assign eff_feedback = true
+    endif
+
+    assign market_country = localization.country.iso_code | upcase
+    assign market_unit = 'cm'
+    assign market_system = 'US'
+    case market_country
+      when 'US' or 'LR' or 'MM'
+        assign market_unit = 'in'
+        assign market_system = 'US'
+      when 'GB'
+        assign market_unit = 'cm'
+        assign market_system = 'UK'
+      when 'DE' or 'FR' or 'IT' or 'ES' or 'NL' or 'BE' or 'AT' or 'CH'
+        assign market_unit = 'cm'
+        assign market_system = 'EU'
+      when 'IN'
+        assign market_unit = 'cm'
+        assign market_system = 'IN'
+      when 'JP'
+        assign market_unit = 'cm'
+        assign market_system = 'JP'
+      when 'AU'
+        assign market_unit = 'cm'
+        assign market_system = 'AU'
+    endcase
+  -%}
+
+  {%- assign asc_measure_image = asc_chart.measure_image.value | default: '' -%}
+  {%- if asc_measure_image != blank -%}
+    {%- unless asc_measure_image contains '://' -%}
+      {%- assign asc_measure_image = asc_measure_image | asset_url -%}
+    {%- endunless -%}
+  {%- endif -%}
+
+  {%- assign asc_chart_gid = asc_chart.system.id | default: asc_chart.id -%}
+
+  {%- assign asc_locale = request.locale.iso_code | downcase -%}
+  {%- assign asc_lang = asc_locale | split: '-' | first -%}
+  {%- assign asc_translations = asc_chart.translations.value -%}
+  {%- assign asc_translation = nil -%}
+  {%- if asc_translations != blank -%}
+    {%- assign asc_translation = asc_translations[asc_locale] -%}
+    {%- if asc_translation == blank -%}
+      {%- assign asc_translation = asc_translations[asc_lang] -%}
+    {%- endif -%}
+  {%- endif -%}
+
+  <script type="application/json" id="asc-data-{{ asc_uid }}">
+    {%- if asc_chart.name.value -%}
+      {
+        "chartId": {{ asc_chart_gid | default: '' | json }},
+        "name": {{ asc_chart.name.value | json }},
+        "defaultUnit": {{ asc_chart.default_unit.value | default: 'cm' | json }},
+        "sizeSystems": {{ asc_chart.size_systems.value | default: '[]' | json }},
+        "tables": {{ asc_chart.tables.value | default: '[]' | json }},
+        "fitNotes": {{ asc_chart.fit_notes.value | default: '' | json }},
+        "measureInstructions": {{ asc_chart.measure_instructions.value | default: '' | json }},
+        "measureImage": {{ asc_measure_image | json }},
+        {%- if asc_translation != blank -%}
+        "translation": {
+          "name": {{ asc_translation.name | default: '' | json }},
+          "fitNotes": {{ asc_translation.fit_notes | default: '' | json }},
+          "measureInstructions": {{ asc_translation.measure_instructions | default: '' | json }},
+          "tables": {{ asc_translation.tables | default: '[]' | json }}
+        }
+        {%- else -%}
+        "translation": null
+        {%- endif -%}
+      }
+    {%- else -%}
+      {{ asc_chart | json }}
+    {%- endif -%}
+  </script>
+
+  <script type="application/json" id="asc-settings-{{ asc_uid }}">
+    {
+      "buttonText": {{ eff_button | json }},
+      "displayMode": {{ eff_mode | json }},
+      "defaultUnit": {{ eff_unit | json }},
+      "defaultSizeSystem": {{ eff_system | json }},
+      "primaryColor": {{ eff_color | json }},
+      "borderRadius": {{ eff_radius | json }},
+      "position": {{ eff_position | json }},
+      "showCalculator": {{ eff_calc | json }},
+      "showFeedback": {{ eff_feedback | json }},
+      "locale": {{ request.locale.iso_code | default: 'en' | json }},
+      "marketUnit": {{ market_unit | json }},
+      "marketSizeSystem": {{ market_system | json }}
+    }
+  </script>
+
+  <div class="asc"
+       id="asc-{{ asc_uid }}"
+       data-asc-root
+       data-uid="{{ asc_uid }}"
+       data-mode="{{ mode | default: 'block' }}"
+       data-placement="{{ placement | default: '' }}"
+       data-product-handle="{{ product.handle }}"
+       data-variant-title="{{ product.selected_or_first_available_variant.title | escape }}"
+       data-product-id="{{ product.id }}"></div>
+
+{%- elsif request.design_mode -%}
+  <div class="asc asc-editor-note">
+    <strong>Size Chart</strong>
+    <span>No chart is assigned to this product yet. Open the app → Assignment to add a rule or a product override.</span>
+  </div>
+{%- endif -%}

@@ -1,0 +1,20 @@
+{
+  "name": "Remplacement du guide des tailles",
+  "heading": "Guide des tailles",
+  "loading": "Chargement du guide des tailles",
+  "missing_product": "Ouvrez ce bloc sur une page produit pour modifier son guide des tailles.",
+  "load_failed": "Impossible de charger les données du guide des tailles.",
+  "error_heading": "Le guide des tailles n'a pas pu se charger",
+  "save_failed": "Impossible d'enregistrer le remplacement.",
+  "intro": "Associez un guide des tailles à ce produit. Un remplacement de produit est utilisé avant toute règle d'affectation.",
+  "chart_label": "Guide des tailles pour ce produit",
+  "no_override": "Aucun remplacement — utiliser les règles d'affectation",
+  "chart_missing": "Guide des tailles indisponible",
+  "summary_override": "Remplacement : {{name}}",
+  "summary_rules": "Aucun remplacement — les règles d'affectation décident",
+  "save": "Enregistrer",
+  "saved": "Remplacement enregistré. La vitrine l'utilisera au prochain chargement de la page produit.",
+  "locked_heading": "Modification verrouillée",
+  "locked_body": "L'essai est terminé. Choisissez une formule dans l'application pour modifier à nouveau les remplacements de produit.",
+  "no_charts": "Aucun guide des tailles n'existe encore. Créez-en un dans l'application, puis revenez à ce bloc."
+}

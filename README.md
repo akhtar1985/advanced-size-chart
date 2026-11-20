@@ -1,156 +1,91 @@
-# Shopify App Template - Extension Only
+# Advanced Size Chart
 
-This is a template for building a [Shopify app](https://shopify.dev/docs/apps/getting-started) using [Preact](https://preactjs.com/) and [Vite](https://vite.dev/). It uses Shopify's [Direct API access](https://shopify.dev/docs/api/app-home#direct-api-access) and [App Bridge](https://shopify.dev/docs/api/app-bridge) to make authenticated calls to the Shopify Admin API directly from the browser — no server required.
+A Shopify app that adds a size guide to product pages: multiple charts per store, automatic assignment by collection, vendor, product type or tag, per-product overrides, unit conversion, and a "Find my size" calculator.
 
-Rather than cloning this repo, follow the [Quick Start steps](#quick-start) below.
+The app is fully serverless. A single Cloudflare Worker serves the embedded admin app, verifies Shopify session tokens, syncs subscription state, and receives webhooks. All product data lives in Shopify as app-owned metaobjects and metafields, so there is no database to run.
 
-## Quick start
+## What merchants get
 
-### Prerequisites
+- **Size charts** stored as `$app:size_chart` metaobjects with any number of tables, columns and rows.
+- **Category presets** covering clothing and non-clothing items: T-shirt, dress shirt, women's top, hoodie, jeans, pants, skirt, shorts, dress, jackets, underwear, swimwear, shoes, socks, belts, gloves, hats, rings, watches and glasses/sunglasses. Each creates a finished chart in one click.
+- **Assignment rules** by collection, vendor, product type, tag or "all products", plus direct product overrides. A Shopify admin block on the product page also sets or clears the override inline.
+- **Storefront options**: size guide button with modal, side drawer, inline, accordion or text-link display (placed next to the variant picker); a floating button from an app embed; or Size guide text links under product titles on collection cards and next to cart line items.
+- **Storefront languages**: the widget's own labels (button, calculator, fit feedback, hints) follow the storefront locale in English, French, German, Spanish, Italian, Japanese, Simplified Chinese and Brazilian Portuguese; chart content uses the per-locale chart translations.
+- **Units and size systems**: cm/inch conversion, US/EU/UK/IN/AU/JP/IT/FR columns detected automatically, and a default size system that follows the visitor's market.
+- **Find my size**: recommends a size from the customer's waist/chest/hip measurements, with the matching row highlighted.
+- **Height & weight finder** and **fit feedback** ("Runs small / True to size / Runs large"), with vote totals on the Dashboard; plus **backup & restore** of charts, rules, overrides and settings.
+- **15-day free trial**, then the storefront chart hides and editing locks until a plan is active. Nothing is deleted.
 
-Before you begin, you'll need to [download and install the Shopify CLI](https://shopify.dev/docs/apps/tools/cli/getting-started) if you haven't already.
+## How it fits together
 
-### Setup
+| Piece | Where | Responsibility |
+| --- | --- | --- |
+| Admin SPA | `admin/` | Static ES modules + Polaris web components inside the Shopify admin iframe. Reads and writes data with the Admin GraphQL API using App Bridge session tokens. |
+| Worker | `worker/index.js` | Serves the SPA, exchanges session tokens for offline tokens, syncs billing through the Partner API, writes `$app:billing`, handles webhooks and the hourly cron. |
+| Theme app extension | `extensions/theme-extension/` | App block and app embeds that resolve the assigned chart in Liquid and render it from JSON. |
+| Admin UI extension | `extensions/product-size-chart/` | Shopify admin block on the product page for setting or clearing the per-product chart override. Preact, built by the Shopify CLI. |
+| Data | Shopify | Metaobjects for charts, shop metafields for rules, settings, the storefront index, billing state and product override registry. |
 
-```shell
-shopify app init --template=https://github.com/Shopify/shopify-app-template-extension-only
-```
+Details of every field and metafield: [docs/schema.md](docs/schema.md).
 
-### Local Development
+## Requirements
 
-```shell
-shopify app dev
-```
+- Node.js 20+
+- [Shopify CLI](https://shopify.dev/docs/apps/tools/cli) 3.x+ (built with 5.0.2)
+- A Cloudflare account (free plan is enough)
+- A Shopify Partner account with a public app and a development store
 
-Press P to open the URL to your app. Once you click install, you can start development.
+## Setup
 
-Local development is powered by [Shopify CLI](https://shopify.dev/docs/apps/build/cli-for-apps/test-apps-locally). It logs into your account, connects to an app, provides environment variables, updates remote config, creates a tunnel and provides commands to generate extensions.
+Full step-by-step instructions, including secrets, billing plans and theme setup: [docs/deploy.md](docs/deploy.md).
 
-## How it works
-
-### Authentication
-
-This template uses [Shopify managed installation](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation). Shopify handles the OAuth flow and app installation automatically. Once installed, the app is fully embedded in the Shopify Admin.
-
-### Querying data
-
-This template uses [Direct API access](https://shopify.dev/docs/api/app-home#direct-api-access) — the Shopify Admin API is called directly from the browser using App Bridge. No server-side code is needed.
-
-This template comes pre-configured with examples of querying data using GraphQL with direct API access, and using [metaobjects](https://shopify.dev/docs/apps/custom-data/metaobjects) to store and retrieve structured app data — see [/shared/models/faq.ts](./shared/models/faq.ts).
-
-### App Bridge
-
-[App Bridge](https://shopify.dev/docs/api/app-bridge) is loaded automatically in embedded apps.
-
-### Polaris Web Components
-
-This template uses [Polaris Web Components](https://shopify.dev/docs/api/app-home/web-components) — the native custom element version of Polaris that works in any framework (including Preact). No additional package installation is required as they are provided automatically in the Shopify Admin iframe.
-
-## GraphQL Codegen
-
-This template is pre-configured with [GraphQL Codegen](https://the-guild.dev/graphql/codegen) to generate TypeScript types from your GraphQL queries.
-
-To regenerate types after updating queries:
+Short version:
 
 ```shell
-npm run codegen
+# 1. Create the KV namespace and paste its id into wrangler.toml
+npx wrangler kv namespace create SHOPS
+
+# 2. Fill the [vars] and placeholder URLs in wrangler.toml and shopify.app.toml
+
+# 3. Add the two secrets through the Wrangler prompt (never commit them)
+npx wrangler secret put SHOPIFY_API_SECRET
+npx wrangler secret put SHOPIFY_PARTNER_API_TOKEN
+
+# 4. Deploy the Worker, then the app configuration and theme extension
+npm run deploy
 ```
 
-To watch for changes:
+## Adding a size chart (merchant flow)
 
-```shell
-npm run codegen:watch
-```
+1. Open **Size charts**. Under **Start from a product category**, search or filter (tops, bottoms, outerwear, underwear, shoes, accessories, glasses & sunglasses) and click the item you sell. The chart is created with sizes, measurement columns, units, fit notes and measuring tips already filled in. Alternatively click **New size chart** for a blank chart.
+2. A confirmation panel appears and shows exactly what was filled (tables, columns, size rows, size systems): click **Show it on all products** (adds an “All products” fallback rule when none exists) or **Assign this chart** to target collections, vendors, types or tags. Use **Review & edit data** to change any cell.
+3. In the editor, add or remove columns and rows, import a CSV, or switch the base unit. Size systems such as US/EU/UK are detected from the column names.
+4. Add the size guide to the storefront in **Help → Method A/B**, or **Settings → Button placement in the theme**: either the **Size Chart** block on the product template or the **Size Chart Float** app embed (one, not both).
 
-## Build
+The theme block and app embed only appear once the app has at least one chart and the store is inside its trial or subscription.
 
-Build the app by running:
+## Trial and plans
 
-Using npm:
+- Shopify App Pricing plans are defined in the Partner Dashboard (one plan with a 15-day trial is enough).
+- During the trial every feature and the storefront chart work.
+- After the trial, `$app:billing.isActive` becomes `false`, the Liquid snippet renders nothing, and the admin pages lock behind a subscribe screen.
+- The Worker refreshes billing hourly so a shop that never opens the app still hides the chart on time. **Refresh status** on the Plan page forces a fresh check.
 
-```shell
-npm run build
-```
+## Scripts
 
-Using yarn:
+| Command | What it does |
+| --- | --- |
+| `npm run worker:dev` | Runs the Worker locally with Wrangler. |
+| `npm run worker:deploy` | Deploys only the Worker. |
+| `shopify app build` | Validates app configuration and bundles the theme extension. |
+| `shopify app deploy` | Deploys app configuration and extensions. |
+| `npm run deploy` | Worker deploy followed by `shopify app deploy`. |
 
-```shell
-yarn build
-```
+`shopify app build` prints an `AssetSizeAppBlockJavaScript` warning for `assets/size-chart.js` (~22 KB raw). Shopify documents this rule as a performance suggestion and does not enforce the 10 KB value; the build still succeeds.
 
-Using pnpm:
+## Security
 
-```shell
-pnpm run build
-```
-
-## Shopify Dev MCP
-
-This template is configured with the Shopify Dev MCP. This instructs [Cursor](https://cursor.com/), [GitHub Copilot](https://github.com/features/copilot), [Claude Code](https://claude.com/product/claude-code), and [Google Gemini CLI](https://github.com/google-gemini/gemini-cli) to use the Shopify Dev MCP.
-
-For more information on the Shopify Dev MCP please read [the documentation](https://shopify.dev/docs/apps/build/devmcp).
-
-## Metafields and Metaobjects
-
-This template uses [metaobjects](https://shopify.dev/docs/apps/custom-data/metaobjects) and [metafields](https://shopify.dev/docs/apps/custom-data/metafields) to store structured app data without a custom database.
-
-### Metaobject: FAQ
-
-The template defines a `faq` metaobject type for storing FAQ entries. Each FAQ has a question, answer, a flag to control visibility on the FAQ page, and optional product associations.
-
-Defined in `shopify.app.toml`:
-
-```toml
-[metaobjects.app.faq]
-name = "FAQ"
-
-[metaobjects.app.faq.fields.question]
-name = "Question"
-type = "single_line_text_field"
-required = true
-
-[metaobjects.app.faq.fields.answer]
-name = "Answer"
-type = "multi_line_text_field"
-required = true
-
-[metaobjects.app.faq.fields.show_on_faq_page]
-name = "Show on FAQ page"
-type = "boolean"
-
-[metaobjects.app.faq.fields.products]
-name = "Products"
-type = "list.product_reference"
-```
-
-### Metafield: Product FAQ
-
-A metafield definition links individual products to a FAQ metaobject entry, allowing merchants to associate a FAQ with specific products.
-
-```toml
-[product.metafields.app.faq]
-name = "FAQ"
-description = "FAQ for this product"
-type = "metaobject_reference<$app:faq>"
-access.admin = "merchant_read_write"
-```
-
-These definitions are automatically synced to Shopify when you run `shopify app dev` or `shopify app deploy`. See [/shared/models/faq.ts](./shared/models/faq.ts) for the client-side model that reads and writes these metaobjects via the Admin GraphQL API.
-
-## Resources
-
-Preact & Vite:
-
-- [Preact docs](https://preactjs.com/guide/v10/getting-started)
-- [Vite docs](https://vite.dev/)
-
-Shopify:
-
-- [Intro to Shopify apps](https://shopify.dev/docs/apps/getting-started)
-- [Direct API access](https://shopify.dev/docs/api/app-home#direct-api-access)
-- [Shopify CLI](https://shopify.dev/docs/apps/tools/cli)
-- [App Bridge](https://shopify.dev/docs/api/app-bridge)
-- [Polaris Web Components](https://shopify.dev/docs/api/app-home/web-components)
-- [Metaobjects](https://shopify.dev/docs/apps/custom-data/metaobjects)
-- [App extensions](https://shopify.dev/docs/apps/app-extensions/list)
-- [Shopify Functions](https://shopify.dev/docs/api/functions)
+- Session tokens are verified in the Worker (HMAC-SHA256, audience, expiry, shop host).
+- Webhooks are HMAC-verified; the app stores no customer data outside Shopify.
+- Offline access tokens live in Workers KV and are never sent to the browser.
+- Secrets are set with `wrangler secret put` and are not part of the repository.

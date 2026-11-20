@@ -1,0 +1,73 @@
+{% comment %}
+  Size Chart Links – app embed that adds a Size guide text link to product
+  cards on collection pages and to cart line items. Each link opens the chart
+  assigned to that product, in a modal.
+{% endcomment %}
+
+{%- liquid
+  assign asc_link_products = nil
+  assign asc_link_placement = ''
+  if block.settings.show_on_collection and request.page_type == 'collection' and collection.products_count > 0
+    assign asc_link_products = collection.products
+    assign asc_link_placement = 'card'
+  elsif block.settings.show_in_cart and request.page_type == 'cart' and cart.item_count > 0
+    assign asc_link_products = cart.items
+    assign asc_link_placement = 'cart'
+  endif
+-%}
+
+{%- if asc_link_products -%}
+  {%- for item in asc_link_products limit: 20 -%}
+    {%- if asc_link_placement == 'cart' -%}
+      {%- assign asc_link_product = item.product -%}
+    {%- else -%}
+      {%- assign asc_link_product = item -%}
+    {%- endif -%}
+    {%- if asc_link_product -%}
+      {%- assign asc_link_uid = 'link-' | append: block.id | append: '-' | append: forloop.index -%}
+      {% render 'size-chart',
+         product: asc_link_product,
+         uid: asc_link_uid,
+         mode: 'link',
+         placement: asc_link_placement,
+         display_mode: 'link',
+         button_text: block.settings.link_text %}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Size Chart Links",
+  "target": "body",
+  "stylesheet": "size-chart.css",
+  "javascript": "size-chart.js",
+  "enabled_on": {
+    "templates": ["collection", "cart"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Adds a Size guide link under the product title on collection cards and next to each cart line item. Each link opens the chart assigned to that product. Links appear for the first 20 products or line items."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_collection",
+      "label": "Show on collection pages",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_in_cart",
+      "label": "Show in the cart",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link text",
+      "info": "Leave blank to use Settings → Button text."
+    }
+  ]
+}
+{% endschema %}

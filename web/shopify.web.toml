@@ -1,0 +1,6 @@
+name = "advanced-size-chart"
+roles = ["frontend"]
+port = 8787
+
+[commands]
+dev = "npx wrangler dev --config ../wrangler.toml --port 8787"

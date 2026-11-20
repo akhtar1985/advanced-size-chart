@@ -1,9 +1,0 @@
-name = "advanced-size-chart"
-main = "index.js"
-compatibility_date = "2024-01-01"
-
-# Secrets (never commit values — set via `wrangler secret put SHOPIFY_WEBHOOK_SECRET`)
-# SHOPIFY_WEBHOOK_SECRET
-
-[triggers]
-# No cron needed — webhook-only worker

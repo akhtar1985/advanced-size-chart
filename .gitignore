@@ -18,11 +18,17 @@ lerna-debug.log*
 # Environment variables
 .env
 .env.*
+.dev.vars
 
 # Build
 dist
 shared/types/graphql
+extensions/*/manifest.json
 *.local
+
+# Local runtime state and scratch tooling
+.wrangler
+.harness
 
 # Editor directories and files
 .vscode/*

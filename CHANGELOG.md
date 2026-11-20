@@ -1,39 +1,32 @@
 # Changelog
 
-## Phase 5 – Billing and compliance
+## Unreleased — serverless rebuild
 
-- `worker/index.js`: Cloudflare Worker handles all 3 mandatory compliance webhooks (`customers/data_request`, `customers/redact`, `shop/redact`) with HMAC-SHA256 verification. No PII stored — acknowledgement only.
-- `worker/wrangler.toml`: Worker deployment config. Secret `SHOPIFY_WEBHOOK_SECRET` set via `wrangler secret put`.
-- `shopify.app.toml`: Registered 3 compliance webhook subscriptions pointing to Worker URL.
-- Feature gating: Free plan limited to 3 charts (gate in `ChartsPage`). Rules page gated behind Pro. Client-side only — Worker is authoritative.
-- Upgrade banner shown when free limit reached.
+- **Category presets**: the preset library is now grouped into product categories (tops, bottoms, dresses, outerwear, underwear & swimwear, kids & baby, shoes & socks, accessories, glasses & sunglasses) with search and filters. Added hoodie, skirt, shorts, dress, sunglasses and kids/baby charts, so non-clothing items such as watches, rings, hats, gloves, belts and eyewear are covered.
+- **Fully pre-filled presets**: every category now includes complete measurement columns with units (chest, waist, hips, thigh, inseam, rise, sleeve, foot width, lens/bridge/temple and more), 4–9 size rows, size-system columns, fit notes and step-by-step measuring instructions — 29 charts, 168 size rows and 99 measured columns in total. All of it is editable.
+- **Kids & baby presets**: a new Kids & baby category with Kids T-shirt (2T–12), Baby bodysuit (0–3M to 18–24M) and Kids pants, each with child-appropriate measurements. The kids and baby charts also ship with a height/weight guide so shoppers can pick a size by height and weight.
+- **Create-then-assign flow**: choosing a category on **Size charts** creates the chart immediately and shows a confirmation panel with a summary of what was filled, **Show it on all products**, **Assign this chart**, **Review & edit data**, and the remaining theme-block step. Loading a category in **New size chart** fills the editor without saving; edit any cell, then **Save chart**.
+- **Variant tables**: a table can be tied to a variant option (for example Fit = Slim). The right table opens first for the selected variant, and the guide refreshes when the variant changes.
+- **Per-locale translations**: charts can carry name, table/column labels, instructions and fit notes per storefront locale. The Liquid snippet resolves the active locale (with language fallback) and the storefront renders the translation; numeric data and size matching stay shared.
+- **Measure diagrams**: all 29 presets now include a how-to-measure illustration (tops, bottoms, dresses, outerwear, bra, footwear, belts, gloves, headwear, circumference, eyewear) drawn as SVG assets. The editor has a diagram picker plus custom image URL and preview.
+- **Backup & restore**: Settings has Export backup (all charts, assignment rules, product overrides and settings in one JSON file) and Import backup (updates charts by ID, creates missing ones, remaps rules and overrides, republishes the storefront index).
+- **Height & weight finder**: any table can carry an optional height/weight guide with a range per size (cm/in, kg/lb). Shoppers enter height and weight (or just one) and get the closest size; the matching table row is highlighted. The editor seeds rows from the table sizes and converts ranges when you switch units.
+- **Fit feedback**: stores can ask shoppers "Runs small / True to size / Runs large" at the bottom of the size guide (Settings → Chart window → Fit feedback). Votes travel through the Shopify app proxy to the Worker, are stored per chart in KV with a 400-day TTL, and totals appear in a **Fit feedback** section on the Dashboard. One vote per chart per browser; votes are deleted on uninstall and `shop/redact`.
+- **Collection & cart size links**: a new **Size Chart Links** app embed adds a Size guide text link under product titles on collection cards and next to each cart line item. Links open the assigned chart in a modal, work alongside the product-page block or float button, and are limited to the first 20 products/line items per page.
+- **Dev preview**: `shopify app dev` now runs the Worker through the CLI tunnel (`web/shopify.web.toml`) and points the development app at it, so the admin preview no longer loads the placeholder `example.workers.dev` URL. Fixed asset-first routing with `run_worker_first` so the Worker actually injects the App Bridge API key into `index.html`; `.dev.vars` is gitignored.
+- **App proxy scope**: added `write_app_proxy` to the app scopes (and to the legacy OAuth request) because Shopify now requires it for apps that declare an `[app_proxy]`; without it `shopify app deploy` cannot create an app version. Existing installs must approve the new scope once.
+- **Storefront languages**: the size guide widget's own labels (button, headings, calculator, fit feedback, error hints) follow the active storefront language in English, French, German, Spanish, Italian, Japanese, Simplified Chinese and Brazilian Portuguese, with English fallback for other locales. Merchant content (chart name, table labels, notes) keeps using the per-locale chart translations, and a customised button text is never overwritten.
+- **Product page override block**: a Shopify admin UI extension (`extensions/product-size-chart`, Preact built by the Shopify CLI) adds a **Size chart** block to the product page. Merchants can pin a chart to the product or clear the override, which writes the same product metafield and `$app:overrides` registry as the Assignment page. Read-only when the trial has ended.
+- **Admin**: replaced the Preact UI extension with a zero-build static SPA in `admin/` (Polaris web components, App Bridge session tokens, direct Admin GraphQL). Pages: Dashboard, Size charts, Editor, Assignment, Settings, Plan, Help, App info.
+- **Auth**: the Worker now exchanges the App Bridge session token for an offline access token (`/api/session`), so installs work inside the admin iframe without a top-level OAuth redirect. The legacy `/auth` flow remains for direct install links.
+- **Billing**: managed app pricing checked through the Partner API; 15-day trial measured from install date when no plan is selected yet; `$app:billing` metafield drives the storefront gate; hourly cron keeps shops that never open the app in sync.
+- **Trial gating**: after the trial, the storefront snippet renders nothing and Chart/Assignment/Settings pages lock behind a subscribe screen. Data is never deleted.
+- **Data**: metaobject and metafield definitions complete in `shopify.app.toml`, including the admin-only `$app:overrides` registry. The product override metafield now grants `storefront = "public_read"`, so per-product overrides render on the storefront instead of silently falling back to rules.
+- **Storefront**: module loaded once per page by the block/embed schema, tolerant of string-or-object JSON fields, size-system column detection for `US`, `US Waist` and `US-…`, variant highlight with range matching, unit labels follow the selected unit, inline/accordion/drawer/modal modes verified in a browser harness.
+- **Theme setup**: app block uses `target: "content"` with `enabled_on` product templates; embed stays on `body`; single asset load per page.
+- **Cleanup**: removed `extensions/app-home`, `extensions/app-tools` and the duplicated `shared/` sources; `shopify app build` and `shopify app config validate` pass with Shopify CLI 5.0.2 (the only build output is Shopify's optional 10 KB JavaScript size suggestion); deployment steps documented in `docs/deploy.md`.
 
-## Phase 4 – Find my size and Markets
+## Earlier
 
-- `size-chart.js`: Added "Find My Size" calculator panel inside the modal — inputs for height, chest/bust, waist, hips; fit preference (snug/regular/loose); algorithm converts to cm, computes distance to each row, applies fit offset, returns nearest size + fallback.
-- `size-chart.js`: `size_selected` dataLayer event fires on table row click. `size_calculator_used` fires on calculator submit. `chart_opened` already present.
-- `size-chart.js`: `marketUnit` and `marketSizeSystem` from Liquid injected into chart data; JS uses them as default unit/system before localStorage preference.
-- `size_chart.liquid`: Markets — reads `localization.country.iso_code`, maps to unit (US/LR/MM → in, others → cm) and size system (GB → UK, DE/FR/etc → EU, IN → IN, JP → JP, AU → AU). Injects `marketUnit` and `marketSizeSystem` into both chart data and settings JSON.
-- `size-chart.css`: Calculator styles added.
-
-## Phase 3 – Admin editor (App Home)
-
-- Replaced FAQ App Home with Size Chart admin UI
-- `ChartsPage`: list, search, duplicate, delete; onboarding 4-step quick-start guide
-- `ChartEditorPage`: table grid editor, add/remove rows & columns, unit per column, size systems, CSV import, CSV/JSON export, 15 preset templates
-- `RulesPage`: add/reorder/delete assignment rules (collection, vendor, product_type, tag, all)
-- `SettingsPage`: global display defaults (mode, unit, button text, color, radius)
-- `shared/models/sizeChart.ts`: full CRUD for metaobjects + shop metafields via GraphQL
-
-## Phase 2 – Theme app extension
-
-- Replaced star-rating extension with size chart extension
-- `blocks/size_chart.liquid`: app block for product pages
-- `blocks/size_chart_floating.liquid`: app embed floating button
-- `assets/size-chart.js`: vanilla JS renderer
-- `assets/size-chart.css`: responsive styles
-
-## Phase 1 – Data model
-
-- Updated `shopify.app.toml`: declared `size_chart` metaobject, product metafield, shop metafields
-- Added `docs/schema.md`
+- Size chart metaobject, product override metafield and shop metafields (`rules`, `settings`, `charts_index`, `billing`) declared in `shopify.app.toml`; schema documented in `docs/schema.md`.
+- Theme app extension with product block and floating app embed, CSV import/export, ready-made templates and the Find my size calculator.

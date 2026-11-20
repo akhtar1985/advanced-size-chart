@@ -2,6 +2,7 @@
   "name": "advanced-size-chart",
   "version": "1.0.0",
   "license": "UNLICENSED",
+  "type": "module",
   "workspaces": [
     "extensions/*"
   ],
@@ -11,7 +12,9 @@
     "dev": "shopify app dev",
     "info": "shopify app info",
     "generate": "shopify app generate",
-    "deploy": "shopify app deploy"
+    "worker:dev": "npx wrangler dev",
+    "worker:deploy": "npx wrangler deploy",
+    "deploy": "npx wrangler deploy && shopify app deploy"
   },
   "dependencies": {},
   "trustedDependencies": [

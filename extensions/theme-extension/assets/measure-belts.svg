@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300" role="img" aria-labelledby="mbelt-title">
+  <title id="mbelt-title">How to measure a belt: belt length and waist</title>
+  <defs>
+    <marker id="mbelt-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0 0 L6 3 L0 6 Z" fill="#2563eb"/>
+    </marker>
+  </defs>
+  <rect x="34" y="140" width="172" height="22" rx="8" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1.5"/>
+  <rect x="20" y="132" width="22" height="38" rx="5" fill="none" stroke="#6b7280" stroke-width="1.5"/>
+  <line x1="31" y1="132" x2="31" y2="170" stroke="#6b7280" stroke-width="1.5"/>
+  <g fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.25">
+    <circle cx="146" cy="151" r="3.5"/>
+    <circle cx="160" cy="151" r="3.5"/>
+    <circle cx="174" cy="151" r="3.5"/>
+    <circle cx="188" cy="151" r="3.5"/>
+  </g>
+  <g fill="none" stroke="#2563eb" stroke-width="1.25" stroke-dasharray="4 3">
+    <line x1="20" y1="112" x2="206" y2="112" marker-start="url(#mbelt-arrow)" marker-end="url(#mbelt-arrow)"/>
+    <line x1="160" y1="126" x2="160" y2="178" marker-start="url(#mbelt-arrow)" marker-end="url(#mbelt-arrow)"/>
+  </g>
+  <g fill="#374151" font-family="Helvetica, Arial, sans-serif" font-size="13">
+    <text x="113" y="104" text-anchor="middle">Belt length</text>
+    <text x="160" y="126" text-anchor="middle">Waist</text>
+  </g>
+</svg>

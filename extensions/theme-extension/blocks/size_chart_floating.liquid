@@ -1,110 +1,58 @@
-{% comment %} Size Chart – app embed (floating button) {% endcomment %}
+{% comment %} Size Chart Float – app embed with a floating button on product pages {% endcomment %}
 
-{%- if request.page_type == 'product' -%}
-  {%- liquid
-    assign chart = nil
-    assign override = product.metafields["$app:size_chart"].value
-    if override != blank
-      assign chart = override
-    endif
-
-    if chart == blank
-      assign rules_json = shop.metafields["$app:rules"].value
-      if rules_json != blank
-        for rule in rules_json
-          assign matched = false
-          case rule.match.type
-            when 'collection'
-              for col in product.collections
-                if col.global_id == rule.match.value
-                  assign matched = true
-                  break
-                endif
-              endfor
-            when 'vendor'
-              if product.vendor == rule.match.value
-                assign matched = true
-              endif
-            when 'product_type'
-              if product.type == rule.match.value
-                assign matched = true
-              endif
-            when 'tag'
-              if product.tags contains rule.match.value
-                assign matched = true
-              endif
-            when 'all'
-              assign matched = true
-          endcase
-          if matched
-            assign chart_gid = rule.chartId
-            break
-          endif
-        endfor
-      endif
-    endif
-  -%}
-
-  {%- if chart != blank or chart_gid != blank -%}
-    <script type="application/json" id="size-chart-float-data">
-      {%- if chart != blank -%}
-        {
-          "name": {{ chart.name | json }},
-          "defaultUnit": {{ chart.default_unit | default: "cm" | json }},
-          "sizeSystems": {{ chart.size_systems.value | default: "[]" | json }},
-          "tables": {{ chart.tables.value | default: "[]" }},
-          "fitNotes": {{ chart.fit_notes | default: "" | json }},
-          "measureImage": {{ chart.measure_image.value.src | default: "" | json }}
-        }
-      {%- else -%}
-        { "chartGid": {{ chart_gid | json }} }
-      {%- endif -%}
-    </script>
-
-    <script type="application/json" id="size-chart-float-settings">
-      {
-        "buttonText": {{ block.settings.button_text | json }},
-        "position": {{ block.settings.position | json }},
-        "primaryColor": {{ block.settings.primary_color | json }}
-      }
-    </script>
-
-    <div id="size-chart-float"
-         data-product-id="{{ product.id }}"
-         data-variant-id="{{ product.selected_or_first_available_variant.id }}">
-    </div>
-
-    {{ 'size-chart.css' | asset_url | stylesheet_tag }}
-    <script src="{{ 'size-chart.js' | asset_url }}" defer></script>
-  {%- endif -%}
+{%- if request.page_type == 'product' and product -%}
+  {% render 'size-chart',
+     product: product,
+     uid: block.id,
+     mode: 'float',
+     button_text: block.settings.button_text,
+     position: block.settings.position,
+     override_color: block.settings.override_color,
+     primary_color: block.settings.primary_color %}
 {%- endif -%}
 
 {% schema %}
 {
   "name": "Size Chart Float",
   "target": "body",
+  "stylesheet": "size-chart.css",
+  "javascript": "size-chart.js",
+  "enabled_on": {
+    "templates": ["product"]
+  },
   "settings": [
+    {
+      "type": "paragraph",
+      "content": "Adds a floating Size guide button to product pages. Use either this embed or the Size Chart app block — not both — to avoid two buttons."
+    },
     {
       "type": "text",
       "id": "button_text",
       "label": "Button text",
-      "default": "Size Guide"
+      "info": "Leave blank to use Settings → Button text."
     },
     {
       "type": "select",
       "id": "position",
       "label": "Position",
       "options": [
+        { "value": "", "label": "Use app settings" },
         { "value": "bottom-right", "label": "Bottom right" },
         { "value": "bottom-left", "label": "Bottom left" }
       ],
-      "default": "bottom-right"
+      "default": ""
+    },
+    {
+      "type": "checkbox",
+      "id": "override_color",
+      "label": "Override button colour",
+      "default": false
     },
     {
       "type": "color",
       "id": "primary_color",
-      "label": "Button color",
-      "default": "#000000"
+      "label": "Button colour",
+      "default": "#111111"
     }
   ]
 }

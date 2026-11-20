@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300" role="img" aria-labelledby="mh-title">
+  <title id="mh-title">How to measure head circumference for a hat</title>
+  <defs>
+    <marker id="mh-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0 0 L6 3 L0 6 Z" fill="#2563eb"/>
+    </marker>
+  </defs>
+  <circle cx="120" cy="152" r="58" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5"/>
+  <path d="M62 132 C62 96 88 70 120 70 C152 70 178 96 178 132 Z" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1.5"/>
+  <ellipse cx="120" cy="132" rx="66" ry="24" fill="none" stroke="#2563eb" stroke-width="1.25" stroke-dasharray="4 3"/>
+  <line x1="54" y1="132" x2="54" y2="106" stroke="#2563eb" stroke-width="1.25" stroke-dasharray="4 3" marker-end="url(#mh-arrow)"/>
+  <line x1="186" y1="132" x2="186" y2="106" stroke="#2563eb" stroke-width="1.25" stroke-dasharray="4 3" marker-end="url(#mh-arrow)"/>
+  <g fill="#374151" font-family="Helvetica, Arial, sans-serif" font-size="13">
+    <text x="120" y="56" text-anchor="middle">Head circumference</text>
+  </g>
+</svg>

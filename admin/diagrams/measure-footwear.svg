@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300" role="img" aria-labelledby="mf-title">
+  <title id="mf-title">How to measure a foot: length and width</title>
+  <defs>
+    <marker id="mf-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0 0 L6 3 L0 6 Z" fill="#2563eb"/>
+    </marker>
+  </defs>
+  <path d="M120 64 C134 64 146 74 148 90 C150 102 144 112 144 124 C144 138 156 150 157 168 C158 190 152 214 146 230 C141 245 133 252 120 252 C107 252 99 245 94 230 C88 214 82 190 83 168 C84 150 96 138 96 124 C96 112 90 102 92 90 C94 74 106 64 120 64 Z" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5"/>
+  <g fill="none" stroke="#b6bcc4" stroke-width="1.25">
+    <path d="M106 68 C104 80 102 88 98 96"/>
+    <path d="M120 64 L120 92"/>
+    <path d="M134 68 C136 80 138 88 142 96"/>
+    <path d="M98 236 Q120 246 142 236"/>
+  </g>
+  <g fill="none" stroke="#2563eb" stroke-width="1.25" stroke-dasharray="4 3">
+    <line x1="176" y1="62" x2="176" y2="254" marker-start="url(#mf-arrow)" marker-end="url(#mf-arrow)"/>
+    <line x1="86" y1="150" x2="158" y2="150" marker-start="url(#mf-arrow)" marker-end="url(#mf-arrow)"/>
+  </g>
+  <g fill="#374151" font-family="Helvetica, Arial, sans-serif" font-size="13">
+    <text x="176" y="164" transform="rotate(-90 176 164)" text-anchor="middle">Foot length</text>
+    <text x="80" y="146" text-anchor="end">Foot width</text>
+  </g>
+</svg>

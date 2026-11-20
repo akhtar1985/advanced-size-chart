@@ -1,0 +1,20 @@
+{
+  "name": "Size chart override",
+  "heading": "Size chart",
+  "loading": "Loading size chart",
+  "missing_product": "Open this block on a product page to edit its size chart.",
+  "load_failed": "Could not load the size chart data.",
+  "error_heading": "Size chart could not load",
+  "save_failed": "Could not save the override.",
+  "intro": "Pin a size chart to this product. A product override is used before any assignment rule.",
+  "chart_label": "Size chart for this product",
+  "no_override": "No override — use assignment rules",
+  "chart_missing": "Chart no longer available",
+  "summary_override": "Override: {{name}}",
+  "summary_rules": "No override — assignment rules decide",
+  "save": "Save",
+  "saved": "Override saved. The storefront uses it the next time the product page loads.",
+  "locked_heading": "Editing is locked",
+  "locked_body": "The trial has ended. Choose a plan in the app to change product overrides again.",
+  "no_charts": "No size charts exist yet. Create one in the app, then come back to this block."
+}

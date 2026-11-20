@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300" role="img" aria-labelledby="mb-title">
+  <title id="mb-title">How to measure pants: waist, hip and inseam</title>
+  <defs>
+    <marker id="mb-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0 0 L6 3 L0 6 Z" fill="#2563eb"/>
+    </marker>
+  </defs>
+  <path d="M78 56 H162 L172 128 L160 248 H130 L120 150 L110 248 H80 L68 128 Z" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5"/>
+  <line x1="120" y1="56" x2="120" y2="150" stroke="#d1d5db" stroke-width="1.5"/>
+  <g fill="none" stroke="#2563eb" stroke-width="1.25" stroke-dasharray="4 3">
+    <line x1="66" y1="64" x2="174" y2="64" marker-start="url(#mb-arrow)" marker-end="url(#mb-arrow)"/>
+    <line x1="64" y1="112" x2="176" y2="112" marker-start="url(#mb-arrow)" marker-end="url(#mb-arrow)"/>
+    <line x1="140" y1="132" x2="140" y2="244" marker-start="url(#mb-arrow)" marker-end="url(#mb-arrow)"/>
+  </g>
+  <g fill="#374151" font-family="Helvetica, Arial, sans-serif" font-size="13">
+    <text x="120" y="58" text-anchor="middle">Waist</text>
+    <text x="120" y="106" text-anchor="middle">Hip</text>
+    <text x="152" y="192" transform="rotate(-90 152 192)" text-anchor="middle">Inseam</text>
+  </g>
+</svg>

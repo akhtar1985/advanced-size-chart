@@ -1,172 +1,80 @@
-{% comment %} Size Chart – app block for product pages {% endcomment %}
+{% comment %} Size Chart – app block for product templates {% endcomment %}
 
-{%- liquid
-  assign chart = nil
-
-  comment
-    1. Per-product override
-  endcomment
-  assign override = product.metafields["$app:size_chart"].value
-  if override != blank
-    assign chart = override
-  endif
-
-  comment
-    2. Rules fallback (stored as JSON on shop metafield)
-  endcomment
-  if chart == blank
-    assign rules_json = shop.metafields["$app:rules"].value
-    if rules_json != blank
-      assign rules = rules_json
-      for rule in rules
-        assign matched = false
-        case rule.match.type
-          when 'collection'
-            for col in product.collections
-              if col.id == rule.match.value or col.global_id == rule.match.value
-                assign matched = true
-                break
-              endif
-            endfor
-          when 'vendor'
-            if product.vendor == rule.match.value
-              assign matched = true
-            endif
-          when 'product_type'
-            if product.type == rule.match.value
-              assign matched = true
-            endif
-          when 'tag'
-            if product.tags contains rule.match.value
-              assign matched = true
-            endif
-          when 'all'
-            assign matched = true
-        endcase
-        if matched
-          assign chart_gid = rule.chartId
-          break
-        endif
-      endfor
-    endif
-  endif
--%}
-
-{%- liquid
-  assign market_unit = 'cm'
-  assign market_system = 'US'
-  assign market_country = localization.country.iso_code | upcase
-  case market_country
-    when 'US' or 'LR' or 'MM'
-      assign market_unit = 'in'
-      assign market_system = 'US'
-    when 'GB'
-      assign market_unit = 'cm'
-      assign market_system = 'UK'
-    when 'DE' or 'FR' or 'IT' or 'ES' or 'NL' or 'BE' or 'AT' or 'CH'
-      assign market_unit = 'cm'
-      assign market_system = 'EU'
-    when 'IN'
-      assign market_unit = 'cm'
-      assign market_system = 'IN'
-    when 'JP'
-      assign market_unit = 'cm'
-      assign market_system = 'JP'
-    when 'AU'
-      assign market_unit = 'cm'
-      assign market_system = 'AU'
-  endcase
--%}
-
-{%- if chart != blank or chart_gid != blank -%}
-  {%- if chart != blank -%}
-    {%- assign chart_data = chart -%}
-  {%- endif -%}
-
-  <script type="application/json" id="size-chart-data-{{ block.id }}">
-    {%- if chart_data != blank -%}
-      {
-        "name": {{ chart_data.name | json }},
-        "defaultUnit": {{ chart_data.default_unit | default: "cm" | json }},
-        "sizeSystems": {{ chart_data.size_systems.value | default: "[]" | json }},
-        "tables": {{ chart_data.tables.value | default: "[]" }},
-        "fitNotes": {{ chart_data.fit_notes | default: "" | json }},
-        "measureInstructions": {{ chart_data.measure_instructions | default: "" | json }},
-        "measureImage": {{ chart_data.measure_image.value.src | default: "" | json }},
-        "marketUnit": {{ market_unit | json }},
-        "marketSizeSystem": {{ market_system | json }}
-      }
-    {%- else -%}
-      { "chartGid": {{ chart_gid | json }} }
-    {%- endif -%}
-  </script>
-
-  <script type="application/json" id="size-chart-settings-{{ block.id }}">
-    {
-      "buttonText": {{ block.settings.button_text | json }},
-      "displayMode": {{ block.settings.display_mode | json }},
-      "defaultUnit": {{ block.settings.default_unit | json }},
-      "primaryColor": {{ block.settings.primary_color | json }},
-      "borderRadius": {{ block.settings.border_radius | json }},
-      "marketUnit": {{ market_unit | json }},
-      "marketSizeSystem": {{ market_system | json }}
-    }
-  </script>
-
-  <div id="size-chart-root-{{ block.id }}"
-       data-block="{{ block.id }}"
-       data-product-id="{{ product.id }}"
-       data-variant-id="{{ product.selected_or_first_available_variant.id }}">
-  </div>
-
-  {{ 'size-chart.css' | asset_url | stylesheet_tag }}
-  <script src="{{ 'size-chart.js' | asset_url }}" defer></script>
+{%- if product -%}
+  {% render 'size-chart',
+     product: product,
+     uid: block.id,
+     mode: 'block',
+     button_text: block.settings.button_text,
+     display_mode: block.settings.display_mode,
+     default_unit: block.settings.default_unit,
+     override_color: block.settings.override_color,
+     primary_color: block.settings.primary_color,
+     border_radius: block.settings.border_radius %}
 {%- endif -%}
 
 {% schema %}
 {
   "name": "Size Chart",
-  "target": "section",
+  "target": "content",
+  "stylesheet": "size-chart.css",
+  "javascript": "size-chart.js",
+  "enabled_on": {
+    "templates": ["product"]
+  },
   "settings": [
+    {
+      "type": "paragraph",
+      "content": "Adds a Size guide button for this product. The chart comes from the app's Assignment rules or a product override. Leave a field blank to use the app Settings value."
+    },
     {
       "type": "text",
       "id": "button_text",
       "label": "Button text",
-      "default": "Size Guide"
+      "info": "Leave blank to use Settings → Button text."
     },
     {
       "type": "select",
       "id": "display_mode",
       "label": "Display mode",
       "options": [
+        { "value": "", "label": "Use app settings" },
         { "value": "modal", "label": "Modal" },
         { "value": "drawer", "label": "Side drawer" },
         { "value": "inline", "label": "Inline" },
-        { "value": "accordion", "label": "Accordion" }
+        { "value": "accordion", "label": "Accordion" },
+        { "value": "link", "label": "Text link next to the variant picker" }
       ],
-      "default": "modal"
+      "default": ""
     },
     {
       "type": "select",
       "id": "default_unit",
       "label": "Default unit",
       "options": [
-        { "value": "cm", "label": "cm" },
-        { "value": "in", "label": "in" }
+        { "value": "", "label": "Use app settings" },
+        { "value": "cm", "label": "Centimetres (cm)" },
+        { "value": "in", "label": "Inches (in)" }
       ],
-      "default": "cm"
+      "default": ""
+    },
+    {
+      "type": "checkbox",
+      "id": "override_color",
+      "label": "Override button colour",
+      "default": false
     },
     {
       "type": "color",
       "id": "primary_color",
-      "label": "Button color",
-      "default": "#000000"
+      "label": "Button colour",
+      "default": "#111111"
     },
     {
       "type": "text",
       "id": "border_radius",
-      "label": "Border radius",
-      "default": "4px"
+      "label": "Corner radius",
+      "info": "Leave blank to use the app Settings value. Example: 8px"
     }
   ]
 }
