@@ -1,0 +1,88 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "4fb063ac0209111ca754ff549e83158a"
+name = "Advanced Size Chart"
+application_url = "https://shopify.dev/apps/default-app-home"
+embedded = true
+
+[build]
+include_config_on_deploy = true
+automatically_update_urls_on_dev = true
+
+[webhooks]
+api_version = "2027-01"
+
+[access.admin]
+direct_api_mode = "online"
+embedded_app_direct_api_access = true
+
+[access_scopes]
+scopes = "write_products,read_products,write_metaobjects,read_metaobjects"
+
+[auth]
+redirect_urls = [ "https://shopify.dev/apps/default-app-home/api/auth" ]
+
+# ── Size Chart metaobject ──────────────────────────────────────────────────────
+
+[metaobjects.app.size_chart]
+name = "Size Chart"
+
+[metaobjects.app.size_chart.fields.name]
+name = "Name"
+type = "single_line_text_field"
+required = true
+
+[metaobjects.app.size_chart.fields.default_unit]
+name = "Default Unit"
+type = "single_line_text_field"
+
+[metaobjects.app.size_chart.fields.size_systems]
+name = "Size Systems"
+type = "list.single_line_text_field"
+
+[metaobjects.app.size_chart.fields.tables]
+name = "Tables"
+type = "json"
+
+[metaobjects.app.size_chart.fields.measure_image]
+name = "Measure Image"
+type = "file_reference"
+
+[metaobjects.app.size_chart.fields.measure_instructions]
+name = "Measure Instructions"
+type = "rich_text_field"
+
+[metaobjects.app.size_chart.fields.fit_notes]
+name = "Fit Notes"
+type = "single_line_text_field"
+
+# ── Per-product metafield (override) ──────────────────────────────────────────
+
+[product.metafields.app.size_chart]
+name = "Size Chart"
+description = "Size chart override for this product"
+type = "metaobject_reference<$app:size_chart>"
+
+  [product.metafields.app.size_chart.access]
+  admin = "merchant_read_write"
+
+# ── Shop-level metafields ──────────────────────────────────────────────────────
+
+[shop.metafields.app.rules]
+name = "Size Chart Rules"
+description = "Ordered list of assignment rules"
+type = "json"
+
+  [shop.metafields.app.rules.access]
+  admin = "merchant_read_write"
+
+[shop.metafields.app.settings]
+name = "Size Chart Settings"
+description = "Global display settings"
+type = "json"
+
+  [shop.metafields.app.settings.access]
+  admin = "merchant_read_write"
+
+[sidekick]
+extensions_summary = "Manage size charts stored as app-owned metaobjects"
