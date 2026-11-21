@@ -1,5 +1,7 @@
 # Advanced Size Chart
 
+**Live demo:** https://akhtar1985.github.io/advanced-size-chart/ — the real storefront widget running on a static page: every display mode, the size calculator, height & weight finder and all 8 widget languages.
+
 A Shopify app that adds a size guide to product pages: multiple charts per store, automatic assignment by collection, vendor, product type or tag, per-product overrides, unit conversion, and a "Find my size" calculator.
 
 The app is fully serverless. A single Cloudflare Worker serves the embedded admin app, verifies Shopify session tokens, syncs subscription state, and receives webhooks. All product data lives in Shopify as app-owned metaobjects and metafields, so there is no database to run.
