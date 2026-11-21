@@ -526,7 +526,10 @@ function initRoot(root) {
       panel = null;
     } else {
       root.classList.remove('is-open');
-      if (panel) panel.hidden = true;
+      if (panel) {
+        panel.hidden = true;
+        panel.style.display = 'none';
+      }
     }
     if (lastFocus instanceof HTMLElement) lastFocus.focus({ preventScroll: true });
   }
@@ -540,6 +543,7 @@ function initRoot(root) {
   function renderPanel() {
     if (!panel) return;
     panel.hidden = false;
+    panel.style.display = '';
     panel.innerHTML = panelMarkup();
     const current = panel.querySelector('.asc-row.is-current');
     if (current && state.result) current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
