@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Advanced Size Chart — size guides that fit every shopper</title>
+    <meta
+      name="description"
+      content="A Shopify size chart app: category presets, variant-aware tables, find-my-size calculator, height and weight finder, fit feedback and per-locale translations. Try the live widget demo."
+    />
+    <meta property="og:title" content="Advanced Size Chart" />
+    <meta
+      property="og:description"
+      content="Size guides for Shopify with presets, variant tables, calculator, translations and fit feedback. Live demo."
+    />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2312141a'/%3E%3Cpath d='M9 11h14M9 16h9M9 21h11' stroke='%23d9f99d' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="assets/size-chart.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="nav">
+      <div class="wrap nav-inner">
+        <a class="brand" href="./">
+          <span class="brand-mark">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+              <path d="M4 6h16M4 12h11M4 18h14" />
+            </svg>
+          </span>
+          Advanced Size Chart
+        </a>
+        <nav class="nav-links">
+          <a href="#demo">Demo</a>
+          <a href="#storefront">Storefront</a>
+          <a href="#admin">Admin</a>
+          <a href="#pricing">Pricing</a>
+          <a href="playground.html">Playground</a>
+          <a class="btn btn-ghost btn-small" href="https://github.com/akhtar1985/advanced-size-chart">GitHub</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="wrap hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Shopify app · runs on Cloudflare Workers</p>
+            <h1>Size guides that fit<br />every shopper</h1>
+            <p class="lede">
+              Publish a size chart in minutes, then let shoppers switch units, find their size by
+              measurements, height or weight, and tell you how the fit really feels — in their own
+              language. Everything below is the real widget, running on this page.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#demo">Try the live demo</a>
+              <a class="btn btn-ghost" href="playground.html">Open the playground</a>
+            </div>
+            <div class="badge-row">
+              <span class="badge">inline · accordion · drawer · modal</span>
+              <span class="badge">8 widget languages</span>
+              <span class="badge">15-day trial</span>
+            </div>
+            <div class="stats">
+              <div><strong>29</strong><span>pre-built charts</span></div>
+              <div><strong>168</strong><span>size rows</span></div>
+              <div><strong>99</strong><span>measured columns</span></div>
+              <div><strong>9</strong><span>product categories</span></div>
+            </div>
+          </div>
+
+          <div class="product-stage">
+            <article class="product-card">
+              <div class="product-media">
+                <span class="tag">Product page · Live demo</span>
+                <svg viewBox="0 0 200 220" fill="none" stroke="#2b2b2b" stroke-width="2" stroke-linejoin="round">
+                  <path d="M65 28l-22 10 8 34 16-5 2 105h62l2-105 16 5 8-34-22-10-12 10h-46L65 28z" />
+                  <path d="M65 28c4 9 14 15 35 15s31-6 35-15" opacity=".5" />
+                  <path d="M79 62h42" opacity=".3" />
+                </svg>
+              </div>
+              <div class="product-body">
+                <div class="product-title">
+                  <h3>Everyday Tee</h3>
+                  <span class="product-price">$29</span>
+                </div>
+                <div class="swatches">
+                  <span class="swatch is-on">Fit: Regular</span>
+                  <span class="swatch">Slim</span>
+                  <span class="swatch">Buckeye / M</span>
+                </div>
+                <div class="buy-row">
+                  <span class="mock-cart">Add to cart</span>
+                  <div data-asc-demo data-uid="hero" data-mode="modal" data-variant-title="Fit|Regular|M"></div>
+                </div>
+              </div>
+            </article>
+            <span class="stage-note">the button opens the real guide →</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="demo" class="band">
+        <div class="wrap">
+          <div class="section-head">
+            <p class="eyebrow">Live demo</p>
+            <h2>One chart, four ways to show it</h2>
+            <p>
+              The same chart data renders inline, as an accordion, a side drawer or a modal. Pick a mode
+              per block in the theme editor. Each panel below is interactive: open a mode, switch to
+              inches, try “Find my size”, or type a height and weight.
+            </p>
+          </div>
+
+          <div class="demo-grid">
+            <div class="panel span-2">
+              <div class="panel-head">
+                <div>
+                  <h3>Inline</h3>
+                  <p>Expands in the page flow instead of an overlay. This product’s fit is <strong>Slim</strong>, so the Slim table opens first.</p>
+                </div>
+                <span class="chip">display mode: inline</span>
+              </div>
+              <div data-asc-demo data-uid="inline" data-mode="inline" data-variant-title="Fit|Slim|M"></div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-head">
+                <div>
+                  <h3>Accordion</h3>
+                  <p>Keeps the product page tidy — one tap reveals the table, calculator and feedback.</p>
+                </div>
+                <span class="chip">display mode: accordion</span>
+              </div>
+              <div data-asc-demo data-uid="accordion" data-mode="accordion" data-variant-title="Fit|Regular|L"></div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-head">
+                <div>
+                  <h3>Drawer</h3>
+                  <p>Slides in from the edge, so shoppers keep the product context while they check sizes.</p>
+                </div>
+                <span class="chip">display mode: drawer</span>
+              </div>
+              <div data-asc-demo data-uid="drawer" data-mode="drawer" data-variant-title="Fit|Regular|M"></div>
+            </div>
+          </div>
+
+          <div class="locale-bar">
+            <strong>Widget language:</strong>
+            <span class="dim">showing <span data-locale-current>English</span></span>
+            <span class="dim">·</span>
+            <a class="locale-pill" data-locale-link="en">English</a>
+            <a class="locale-pill" data-locale-link="fr">Français</a>
+            <a class="locale-pill" data-locale-link="de">Deutsch</a>
+            <a class="locale-pill" data-locale-link="es">Español</a>
+            <a class="locale-pill" data-locale-link="it">Italiano</a>
+            <a class="locale-pill" data-locale-link="ja">日本語</a>
+            <a class="locale-pill" data-locale-link="zh-cn">简体中文</a>
+            <a class="locale-pill" data-locale-link="pt-br">Português (BR)</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="storefront">
+        <div class="wrap">
+          <div class="section-head">
+            <p class="eyebrow">For shoppers</p>
+            <h2>The guide does the work</h2>
+            <p>
+              The widget ships with the app — no code, no theme edits beyond adding the block or embed.
+              It reads the assigned chart, resolves the active locale and market, and renders instantly.
+            </p>
+          </div>
+
+          <div class="feature-grid">
+            <article class="feature">
+              <div class="icon-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 9h18M9 9v11" /></svg>
+              </div>
+              <h3>Four display modes</h3>
+              <p>Inline, accordion, drawer or modal — selected per theme block. A floating button can show the guide on every product page.</p>
+              <p class="how">Theme editor → App blocks → Size chart</p>
+            </article>
+
+            <article class="feature">
+              <div class="icon-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16" /><circle cx="9" cy="7" r="2" fill="currentColor" stroke="none" /><circle cx="15" cy="12" r="2" fill="currentColor" stroke="none" /><circle cx="8" cy="17" r="2" fill="currentColor" stroke="none" /></svg>
+              </div>
+              <h3>Variant-aware tables</h3>
+              <p>Attach a table to a variant option such as Fit = Slim. The matching table opens first and its size row is highlighted.</p>
+              <p class="how">See it in the inline demo above</p>
+            </article>
+
+            <article class="feature">
+              <div class="icon-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="3" width="14" height="18" rx="2" /><path d="M8 7h8M8 11h2M12 11h2M16 11h0M8 15h2M12 15h2" /></svg>
+              </div>
+              <h3>Find my size</h3>
+              <p>Shoppers enter chest, waist or hips and get the closest size with the shop’s own size-system label, not a guess.</p>
+              <p class="how">Powered by the chart’s measured columns</p>
+            </article>
+
+            <article class="feature">
+              <div class="icon-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3v18M7 8l5-5 5 5M7 16l5 5 5-5" /></svg>
+              </div>
+              <h3>Height &amp; weight finder</h3>
+              <p>Optional per-table ranges in cm/in and kg/lb. Enter one or both values and the closest size row lights up.</p>
+              <p class="how">Editor → table → Height &amp; weight</p>
+            </article>
+
+            <article class="feature">
+              <div class="icon-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7V5h16v2M12 5v14M8 19h8" /></svg>
+              </div>
+              <h3>Units that follow the shopper</h3>
+              <p>A cm/in toggle is remembered between visits. US visitors start in inches, most of Europe in centimetres, using each market’s defaults.</p>
+              <p class="how">Unit labels update across the whole table</p>
+            </article>
+
+            <article class="feature">
+              <div class="icon-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18" /></svg>
+              </div>
+              <h3>Speaks 8 languages</h3>
+              <p>Button, headings, calculator, height/weight and feedback labels follow the storefront language: EN, FR, DE, ES, IT, JA, ZH-CN, PT-BR.</p>
+              <p class="how">Try the language pills above</p>
+            </article>
+
+            <article class="feature">
+              <div class="icon-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1.4 1.4" /><path d="M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1.4-1.4" /></svg>
+              </div>
+              <h3>Size links everywhere</h3>
+              <p>An embed adds “Size guide” links under titles on collection cards and beside cart line items, limited to 20 per page for speed.</p>
+              <p class="how">App embed → Size Chart Links</p>
+            </article>
+
+            <article class="feature">
+              <div class="icon-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12a8 8 0 01-11.6 7.1L4 21l1.9-5.4A8 8 0 1121 12z" /><path d="M9 11h6M9 14h4" /></svg>
+              </div>
+              <h3>Fit feedback</h3>
+              <p>Shoppers vote runs small / true to size / runs large. Votes go through the app proxy and appear as totals on the dashboard — one vote per chart per browser.</p>
+              <p class="how">Toggle it in Settings → Chart window</p>
+            </article>
+
+            <article class="feature">
+              <div class="icon-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M7 9h6M7 13h10M7 17h4" /></svg>
+              </div>
+              <h3>Fit notes &amp; diagrams</h3>
+              <p>Every chart can carry a fit note and step-by-step measuring instructions with an illustration: tops, bottoms, dresses, bras, footwear, belts, gloves, headwear, eyewear and more.</p>
+              <p class="how">Shown inside the guide, under the table</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="admin" class="band">
+        <div class="wrap">
+          <div class="section-head">
+            <p class="eyebrow">For merchants</p>
+            <h2>Managed from inside the Shopify admin</h2>
+            <p>
+              No separate dashboard to learn. The app is embedded in the admin and built with App Bridge,
+              so charts, rules, settings and the plan all live where merchants already work.
+            </p>
+          </div>
+
+          <div class="split">
+            <div>
+              <h3>Pages, all in one app</h3>
+              <ul class="checklist">
+                <li>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5" /></svg>
+                  <span><strong>Dashboard</strong><span>Active charts, assignment rules, fit-feedback totals and plan status at a glance.</span></span>
+                </li>
+                <li>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5" /></svg>
+                  <span><strong>Size charts + Editor</strong><span>Create from 29 category presets, then edit every column, unit, row, table, note and instruction.</span></span>
+                </li>
+                <li>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5" /></svg>
+                  <span><strong>Assignment</strong><span>Rules by collection, vendor, product type or tag with priority order, plus a per-product override.</span></span>
+                </li>
+                <li>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5" /></svg>
+                  <span><strong>Settings</strong><span>Button text, colours, radius, display mode, calculator and feedback toggles, default units.</span></span>
+                </li>
+                <li>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5" /></svg>
+                  <span><strong>Plan, Help, App info</strong><span>Trial and subscription state, documentation for every setting, and an inventory of what the app stores.</span></span>
+                </li>
+              </ul>
+            </div>
+
+            <figure class="figure">
+              <img src="assets/measure-tops.svg" alt="Measure diagram for a t-shirt: chest, length, shoulder and sleeve" width="640" height="420" />
+              <figcaption>
+                Measure diagrams are built into the editor and ship with the presets. Merchants can pick a
+                diagram, point to a custom image URL, and preview it before saving.
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="wrap">
+          <div class="section-head">
+            <p class="eyebrow">Everything else</p>
+            <h2>Small things that save hours</h2>
+          </div>
+
+          <div class="feature-grid">
+            <article class="feature">
+              <div class="icon-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3l1.8 4.6L18 9l-4.2 1.4L12 15l-1.8-4.6L6 9l4.2-1.4L12 3z" /><path d="M18.5 15l.9 2.2 2.1.8-2.1.8-.9 2.2-.9-2.2-2.1-.8 2.1-.8.9-2.2z" /></svg>
+              </div>
+              <h3>Category presets</h3>
+              <p>Tops, bottoms, dresses, outerwear, underwear &amp; swimwear, kids &amp; baby, shoes &amp; socks, accessories, and glasses. Search by keyword, load, edit, save.</p>
+              <p class="how">29 charts · 168 rows · 99 columns, all editable</p>
+            </article>
+
+            <article class="feature">
+              <div class="icon-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 5h7M9 3v2c0 4-2.5 7-6 9" /><path d="M5 9c1.5 3 4 5 7 6" /><path d="M13 20l4-10 4 10M14.6 16.5h4.8" /></svg>
+              </div>
+              <h3>Translations per locale</h3>
+              <p>Give each chart a translated name, table labels, fit notes and instructions. The snippet resolves the shopper’s locale with a language fallback; numbers stay shared.</p>
+              <p class="how">Editor → Translations</p>
+            </article>
+
+            <article class="feature">
+              <div class="icon-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12a9 9 0 11-2.6-6.3" /><path d="M21 4v5h-5" /></svg>
+              </div>
+              <h3>Backup &amp; restore</h3>
+              <p>Export every chart, rule, override and setting into one JSON file. Import updates charts by ID, creates missing ones, remaps references and republishes the index.</p>
+              <p class="how">Settings → Export / Import backup</p>
+            </article>
+
+            <article class="feature">
+              <div class="icon-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 8h8M8 12h8M8 16h5" /></svg>
+              </div>
+              <h3>CSV in, CSV out</h3>
+              <p>Move a size table between shops or spreadsheets. Export a chart as CSV and import one back into the editor.</p>
+              <p class="how">Editor toolbar</p>
+            </article>
+
+            <article class="feature">
+              <div class="icon-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="3" /><path d="M12 8v8M8 12h8" /></svg>
+              </div>
+              <h3>Product page block</h3>
+              <p>A small admin block on the product page pins a chart to that product or clears the override, without leaving the product admin.</p>
+              <p class="how">Product page → Apps → Size chart</p>
+            </article>
+
+            <article class="feature">
+              <div class="icon-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9" /><path d="M9.5 9.5a2.5 2.5 0 114.3 1.7c-.8.8-1.8 1.2-1.8 2.8M12 17.5h.01" /></svg>
+              </div>
+              <h3>Built-in help</h3>
+              <p>Every setting is documented inside the app, and an App info page lists what is stored, where, and what is removed on uninstall.</p>
+              <p class="how">Help · App info</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="band">
+        <div class="wrap">
+          <div class="section-head">
+            <p class="eyebrow">Under the hood</p>
+            <h2>Serverless by design</h2>
+            <p>
+              The backend is a single Cloudflare Worker with a KV store. No servers to patch, nothing that
+              spins down, and the storefront widget is a small script loaded once per page.
+            </p>
+          </div>
+
+          <div class="feature-grid">
+            <article class="feature">
+              <div class="icon-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z" /><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5" /></svg>
+              </div>
+              <h3>Edge backend</h3>
+              <p>The Worker handles OAuth, session-token exchange, the app proxy, webhooks and the storefront index. Charts live in Shopify metaobjects.</p>
+            </article>
+
+            <article class="feature">
+              <div class="icon-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" /><path d="M9 12l2 2 4-4" /></svg>
+              </div>
+              <h3>Embedded &amp; secure</h3>
+              <p>App Bridge session tokens, HMAC-verified webhooks including the mandatory privacy topics, and per-shop data that is removed on uninstall and shop redaction.</p>
+            </article>
+
+            <article class="feature">
+              <div class="icon-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="6" width="18" height="12" rx="2" /><circle cx="12" cy="12" r="2.5" /><path d="M7 9v6M17 9v6" /></svg>
+              </div>
+              <h3>Billing built in</h3>
+              <p>Shopify App Pricing with a hosted plan page, subscription checks through the Partner API and an hourly sync that keeps the storefront gate correct.</p>
+            </article>
+          </div>
+
+          <p class="note">
+            This page is a static demo: chart data is embedded locally and feedback votes stay in your
+            browser. In a store, the same widget reads the assigned chart from Shopify metaobjects and
+            posts feedback through the app proxy.
+          </p>
+        </div>
+      </section>
+
+      <section id="pricing">
+        <div class="wrap">
+          <div class="pricing-card">
+            <div>
+              <p class="eyebrow" style="color: #c7cbf5">Pricing</p>
+              <h2>One plan. Every feature.</h2>
+              <p>
+                Charts, presets, calculator, height &amp; weight, translations, fit feedback, backup and
+                support — no per-chart charges.
+              </p>
+              <p class="fine">App Store listing is in preparation. The source is public on GitHub.</p>
+            </div>
+            <div>
+              <div class="price">$10 <span>/ month</span></div>
+              <ul class="pricing-list">
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M20 6L9 17l-5-5" /></svg>
+                  15-day free trial, no card needed to start
+                </li>
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M20 6L9 17l-5-5" /></svg>
+                  Data kept after the trial — the guide just hides
+                </li>
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M20 6L9 17l-5-5" /></svg>
+                  Cancel from the Shopify admin at any time
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap footer-inner">
+        <span>Advanced Size Chart · built for Shopify · runs on Cloudflare Workers</span>
+        <div class="footer-links">
+          <a href="playground.html">Playground</a>
+          <a href="https://github.com/akhtar1985/advanced-size-chart">GitHub</a>
+          <a href="https://github.com/akhtar1985/advanced-size-chart/blob/main/docs/deploy.md">Deploying</a>
+          <a href="https://github.com/akhtar1985/advanced-size-chart/blob/main/CHANGELOG.md">Changelog</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/demo-data.js"></script>
+    <script type="module" src="assets/size-chart.js"></script>
+  </body>
+</html>

@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Playground — Advanced Size Chart</title>
+    <meta name="description" content="Try every Advanced Size Chart display mode, colour and language on one page." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2312141a'/%3E%3Cpath d='M9 11h14M9 16h9M9 21h11' stroke='%23d9f99d' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="assets/size-chart.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="nav">
+      <div class="wrap nav-inner">
+        <a class="brand" href="./">
+          <span class="brand-mark">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+              <path d="M4 6h16M4 12h11M4 18h14" />
+            </svg>
+          </span>
+          Advanced Size Chart
+        </a>
+        <nav class="nav-links">
+          <a href="index.html#demo">Demo</a>
+          <a href="index.html#storefront">Storefront</a>
+          <a href="index.html#admin">Admin</a>
+          <a href="index.html#pricing">Pricing</a>
+          <a class="btn btn-ghost btn-small" href="https://github.com/akhtar1985/advanced-size-chart">GitHub</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-head">
+        <div class="wrap">
+          <p class="eyebrow">Playground</p>
+          <h1>Every mode, on one page</h1>
+          <p class="lede">
+            Each card below is the same chart configured differently. Change the language with the pills;
+            the choice carries across the whole page.
+          </p>
+          <div class="locale-bar">
+            <strong>Language:</strong>
+            <span class="dim">showing <span data-locale-current>English</span></span>
+            <span class="dim">·</span>
+            <a class="locale-pill" data-locale-link="en">English</a>
+            <a class="locale-pill" data-locale-link="fr">Français</a>
+            <a class="locale-pill" data-locale-link="de">Deutsch</a>
+            <a class="locale-pill" data-locale-link="es">Español</a>
+            <a class="locale-pill" data-locale-link="it">Italiano</a>
+            <a class="locale-pill" data-locale-link="ja">日本語</a>
+            <a class="locale-pill" data-locale-link="zh-cn">简体中文</a>
+            <a class="locale-pill" data-locale-link="pt-br">Português (BR)</a>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="wrap mode-grid">
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <h3>Modal</h3>
+                <p>Centred dialog with a dimmed backdrop. Best default for mobile and desktop.</p>
+              </div>
+              <span class="chip">data-mode: modal</span>
+            </div>
+            <div data-asc-demo data-uid="pg-modal" data-mode="modal" data-variant-title="Fit|Regular|M"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <h3>Drawer</h3>
+                <p>Slides in from the right edge and fills the viewport height.</p>
+              </div>
+              <span class="chip">data-mode: drawer</span>
+            </div>
+            <div data-asc-demo data-uid="pg-drawer" data-mode="drawer" data-variant-title="Fit|Slim|L"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <h3>Accordion</h3>
+                <p>Collapsed by default; expands in place. Inherits the brand colour.</p>
+              </div>
+              <span class="chip">data-mode: accordion</span>
+            </div>
+            <div data-asc-demo data-uid="pg-accordion" data-mode="accordion" data-variant-title="Fit|Regular|S"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <h3>Brand colour</h3>
+                <p>The same accordion with <code>primaryColor</code> set to indigo #4338ca.</p>
+              </div>
+              <span class="chip">primaryColor: #4338ca</span>
+            </div>
+            <div data-asc-demo data-uid="pg-brand" data-mode="accordion" data-primary="#4338ca" data-variant-title="Fit|Slim|M"></div>
+          </div>
+
+          <div class="panel span-2">
+            <div class="panel-head">
+              <div>
+                <h3>Inline</h3>
+                <p>
+                  Rendered in the page flow with no overlay — tap the button to expand. The table, unit
+                  toggle, calculator, height &amp; weight finder, fit note and feedback all appear in order.
+                </p>
+              </div>
+              <span class="chip">data-mode: inline</span>
+            </div>
+            <div data-asc-demo data-uid="pg-inline" data-mode="inline" data-variant-title="Fit|Regular|M"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="band">
+        <div class="wrap">
+          <div class="section-head">
+            <p class="eyebrow">How to read the source</p>
+            <h2>What this page actually loads</h2>
+            <p>
+              The demo reproduces the storefront markup exactly: two JSON data blocks and a root div,
+              followed by the widget script. That is also what the Liquid snippet outputs.
+            </p>
+          </div>
+
+          <pre class="code"><code>&lt;script type="application/json" id="asc-data-pg-inline"&gt;
+  { "name": "Everyday Tee Size Guide", "tables": [ … ] }
+&lt;/script&gt;
+&lt;script type="application/json" id="asc-settings-pg-inline"&gt;
+  { "displayMode": "inline", "defaultUnit": "cm", "primaryColor": "#111111", … }
+&lt;/script&gt;
+
+&lt;div class="asc"
+     data-asc-root
+     data-uid="pg-inline"
+     data-mode="inline"
+     data-variant-title="Fit|Regular|M"&gt;&lt;/div&gt;
+
+&lt;script type="module" src="/size-chart.js"&gt;&lt;/script&gt;</code></pre>
+
+          <ul class="checklist">
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5" /></svg>
+              <span><strong>Variant matching</strong><span>On a product page the widget reads the selected options; here it uses <code>data-variant-title</code> split on <code>|</code>.</span></span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5" /></svg>
+              <span><strong>Unit memory</strong><span>A toggle between cm and in persists in localStorage, so shoppers do not flip it every visit.</span></span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5" /></svg>
+              <span><strong>One vote per chart</strong><span>After a fit vote the buttons collapse to a thank-you line; votes are locked per chart in the browser.</span></span>
+            </li>
+          </ul>
+
+          <p class="note">
+            Feedback votes on this static demo cannot reach the app proxy, so the request fails quietly.
+            In a real store the widget posts to <code>/apps/size-chart/feedback</code> and the Worker records the tally.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap footer-inner">
+        <span>Advanced Size Chart · built for Shopify · runs on Cloudflare Workers</span>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="https://github.com/akhtar1985/advanced-size-chart">GitHub</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/demo-data.js"></script>
+    <script type="module" src="assets/size-chart.js"></script>
+  </body>
+</html>
