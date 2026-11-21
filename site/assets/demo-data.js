@@ -114,4 +114,19 @@
     else url.searchParams.set('locale', target);
     link.setAttribute('href', url.pathname + url.search + url.hash);
   });
+
+  var openUid = (params.get('open') || '').replace(/[^\w-]/g, '');
+  if (openUid) {
+    var tries = 0;
+    var tryOpen = function () {
+      var root = document.querySelector('[data-asc-demo][data-uid="' + openUid + '"]');
+      var btn = root && root.querySelector('.asc-btn');
+      if (btn) {
+        if (btn.getAttribute('aria-expanded') !== 'true') btn.click();
+      } else if (tries++ < 40) {
+        setTimeout(tryOpen, 100);
+      }
+    };
+    window.addEventListener('load', tryOpen);
+  }
 })();

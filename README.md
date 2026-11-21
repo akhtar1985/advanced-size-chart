@@ -4,6 +4,17 @@
 
 A Shopify app that adds a size guide to product pages: multiple charts per store, automatic assignment by collection, vendor, product type or tag, per-product overrides, unit conversion, and a "Find my size" calculator.
 
+## Live demo
+
+[![The Advanced Size Chart size guide open on a demo product page](site/img/demo-modal.png)](https://akhtar1985.github.io/advanced-size-chart/)
+
+Open **https://akhtar1985.github.io/advanced-size-chart/** — nothing to install. The page loads the same widget script and JSON data shape the Liquid snippet outputs, so what you see is what a store shows.
+
+- **[Landing page](https://akhtar1985.github.io/advanced-size-chart/)** — product-page mock plus the guide in modal, inline, accordion and drawer modes.
+- **[Playground](https://akhtar1985.github.io/advanced-size-chart/playground.html)** — every mode, a custom brand colour and all 8 widget languages side by side.
+
+Deep links: add `?open=hero`, `?open=inline`, `?open=accordion` or `?open=drawer` to open a guide immediately, and `?locale=fr` (also `de`, `es`, `it`, `ja`, `zh-cn`, `pt-br`) to change the widget language. Example: [inline guide in French](https://akhtar1985.github.io/advanced-size-chart/?open=inline&locale=fr).
+
 The app is fully serverless. A single Cloudflare Worker serves the embedded admin app, verifies Shopify session tokens, syncs subscription state, and receives webhooks. All product data lives in Shopify as app-owned metaobjects and metafields, so there is no database to run.
 
 ## What merchants get
