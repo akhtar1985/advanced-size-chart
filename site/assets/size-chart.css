@@ -171,6 +171,10 @@
   transition: transform 0.18s ease, opacity 0.18s ease;
 }
 
+.asc-panel[hidden] {
+  display: none;
+}
+
 .asc-overlay.asc-open .asc-panel {
   transform: none;
   opacity: 1;
